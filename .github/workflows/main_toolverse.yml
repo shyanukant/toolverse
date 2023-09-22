@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and Deploy - toolverse
+name: Build and deploy Python app to Azure Web App - toolverse
 
 on:
   push:
@@ -18,26 +18,26 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Set up Python version
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v1
         with:
-          python-version: '3.11' # Specify your desired Python version
+          python-version: '3.11'
 
-      - name: Create and activate virtual environment
+      - name: Create and start virtual environment
         run: |
           python -m venv venv
           source venv/bin/activate
-
-      - name: Install Python dependencies
+      
+      - name: Install dependencies
         run: pip install -r requirements.txt
-
+        
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-
-      - name: Upload artifact for deployment
+      
+      - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
         with:
           name: python-app
           path: |
-            *
+            . 
             !venv/
 
   deploy:
@@ -52,22 +52,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: python-app
-          path: ./toolverse  
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18' # Specify your desired Node.js version
-
-      - name: Install Node modules
-        run: |
-          cd ./toolverse   # Navigate to the deployment directory
-          npm install
-
+          path: .
+          
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
           app-name: 'toolverse'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_05AFAE542BB14F96901C5B6B39AA61E1 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_72C27D05B8D04470A5EA943569ACF8C1 }}
