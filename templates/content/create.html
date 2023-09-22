@@ -1,0 +1,22 @@
+<!-- Modal toggle -->
+{% extends "base.html" %}
+{% block title %} Contents Create {% endblock %}
+{% block content %}
+
+{% include "nav&sidebar/sidebar.html" %}
+<div class="p-4 sm:ml-64">
+
+    <!-- Main modal -->
+    <div class="relative w-full max-w-2xl max-h-full mt-14">
+        <!-- Modal content -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg">
+            <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+
+                {% include "content/forms.html" %}
+
+            </div>
+        </section>
+    </div>
+
+</div>
+{% endblock %}

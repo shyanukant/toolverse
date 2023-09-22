@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %} Contents {% endblock %}
+
+{% block content %}
+{% include "nav&sidebar/sidebar.html" %}
+
+<div class="p-4 sm:ml-64">
+    <div class="grid grid-cols-3 gap-4 h-screen p-4 mt-14">
+        <div class="col-span-2 bg-gray-50 dark:bg-gray-800 p-4 rounded">
+            {% for response in responses %}
+            <div
+                class=" flex p-4 my-4 border border-gray-300 rounded-lg bg-gray-50 dark:border-gray-600 dark:bg-gray-800 ">
+                <div class="flex flex-col items-center">
+                    <!-- <span class="sr-only">Info</span> -->
+                    <h3 class="text-lg font-medium text-gray-800 dark:text-gray-300">{{ response }}</h3>
+                    <p class="m-4 text-sm text-gray-800 dark:text-gray-300">
+                        {{ response.response.script.body|slice:"0:70" }}...
+                    <p>
+                </div>
+                <div>
+                    <a href="{% url 'contents:result' response.id %}" data-response-id="{{ response.id }}"
+                        class="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 content-view-button">
+                        View More
+                    </a>
+
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="p-2">
+            <a href="{% url 'contents:create' %}"
+                class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Generate
+                Content</a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

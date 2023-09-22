@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %} {{ head_info }}{% endblock %}
+{% block content %}
+{% load static %}
+{% load socialaccount %}
+    <section class="bg-gray-50 dark:bg-gray-900">
+        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+
+            {% include "messages/message.html" %}
+
+            <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                    <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                        {{ head_info }}
+                    </h1>
+                    <hr>
+                    {% if auth == 'signup' %}
+                    {% include "auth/signup.html" %}
+
+                    {% elif auth == 'login' %}
+                    {% include "auth/login.html" %}
+                    
+                    {% elif auth == 'reset_pass' %}
+                    {% include "auth/resetpass.html" %}
+
+                    {% elif auth == 'set_pass' %}
+                    {% include "auth/set-new-pass.html" %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+      </section>
+
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+    function showPassword(){
+        let password = document.getElementById('password');
+        let confirmPassword = document.getElementById('confirm-password');
+        let showPassword = document.getElementById('show-password');
+
+        if (password.type === 'password' && confirmPassword.type === 'password'){
+            password.type = 'text';
+            confirmPassword.type = 'text';
+            showPassword.innerText = 'Hide Password';
+        } else {
+            password.type = 'password';
+            confirmPassword.type = 'password';
+            showPassword.innerText = 'Show Password';
+        }
+
+    }
+</script>
+
+{% endblock %}

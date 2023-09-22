@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<main class="container mx-auto">
+    <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
+
+        <section
+            class="bg-white dark:bg-gray-900 bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
+            <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 z-10 relative">
+                <!-- <a href="#"
+                    class="inline-flex justify-between items-center py-1 px-1 pr-4 mb-7 text-sm text-primary-700 bg-primary-100 rounded-full dark:bg-primary-900 dark:text-primary-300 hover:bg-primary-200 dark:hover:bg-primary-800">
+                    <span class="text-xs bg-primary-600 rounded-full text-white px-4 py-1.5 mr-3">New</span> <span
+                        class="text-sm font-medium">Jumbotron component was launched! See what's new</span>
+                    <svg class="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 9 4-4-4-4" />
+                    </svg>
+                </a> -->
+                <h1
+                    class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+                    Toolverse: Your AI-Powered Creative Partner</h1>
+                <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-200">
+                    Elevate your brand's content game effortlessly with AI-generated content and multi-brand management.
+                </p>
+                <a href="{% url 'contents:dashboard' %}"
+                    class="text-white bg-gradient-to-br from-purple-600 to-primary-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-primary-300 dark:focus:ring-primary-800 font-medium rounded-lg text-3xl px-5 py-2.5 my-4 text-center mr-2 ">Let's
+                    Started</a>
+
+            </div>
+            <video class="w-full h-auto max-w-screen-lg border border-gray-200 rounded-lg dark:border-gray-700 mx-auto"
+                controls>
+                <source src="/docs/videos/flowbite.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+
+            
+            <div
+                class="bg-gradient-to-b from-primary-50 to-transparent dark:from-primary-900 w-full h-full absolute top-0 left-0 z-0">
+            </div>
+
+        </section>
+
+        <!-- FEATURE SECTION  -->
+
+        <section class="bg-white dark:bg-gray-900">
+            <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
+                <div class="max-w-screen-md mb-8 lg:mb-16">
+                    <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Unlock Content
+                        Creation Mastery with Toolverse</h2>
+                    <p class="text-gray-500 sm:text-xl dark:text-gray-400">Our mission is to empower you, the visionary
+                        content creator, to paint your brand's narrative across the digital landscape. </p>
+                </div>
+                <div class="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0">
+                    <div class="rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800">
+                        <div
+                            class="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
+                            <svg class="w-5 h-5 text-primary-600 lg:w-6 lg:h-6 dark:text-primary-300"
+                                fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="mb-2 text-xl font-bold dark:text-white">AI-Powered Content Generation</h3>
+                        <p class="text-gray-500 dark:text-gray-400">Leverage cutting-edge AI technology to effortlessly
+                            create high-quality content, from blog posts to social media updates, that resonates with
+                            your audience.</p>
+                    </div>
+                    <div class="rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800">
+                        <div
+                            class="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
+                            <svg class="w-5 h-5 text-primary-600 lg:w-6 lg:h-6 dark:text-primary-300"
+                                fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="mb-2 text-xl font-bold dark:text-white">Multi-Brand Management</h3>
+                        <p class="text-gray-500 dark:text-gray-400">Seamlessly manage multiple brands within a single
+                            platform. Define unique brand profiles, colors, logos, and fonts for each, all in one place.
+
+                        </p>
+                    </div>
+                    <div class="rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800">
+                        <div
+                            class="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
+                            <svg class="w-5 h-5 text-primary-600 lg:w-6 lg:h-6 dark:text-primary-300"
+                                fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z"
+                                    clip-rule="evenodd"></path>
+                                <path
+                                    d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="mb-2 text-xl font-bold dark:text-white">Customizable Tone Selection</h3>
+                        <p class="text-gray-500 dark:text-gray-400">Tailor the tone of your content to match your
+                            brand's voice and personality. Choose from a variety of tones, from professional to
+                            conversational.
+
+                        </p>
+                    </div>
+                    <div class="rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800">
+                        <div
+                            class="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
+                            <svg class="w-5 h-5 text-primary-600 lg:w-6 lg:h-6 dark:text-primary-300"
+                                fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z">
+                                </path>
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="mb-2 text-xl font-bold dark:text-white">Cross-Platform Publishing</h3>
+                        <p class="text-gray-500 dark:text-gray-400">Share your content across popular social media
+                            platforms like Facebook, Instagram, Twitter, and more with just a few clicks.</p>
+                    </div>
+                    <div class="rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800">
+                        <div
+                            class="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
+                            <svg class="w-5 h-5 text-primary-600 lg:w-6 lg:h-6 dark:text-primary-300"
+                                fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="mb-2 text-xl font-bold dark:text-white">Effortless Prompt-Based Writing</h3>
+                        <p class="text-gray-500 dark:text-gray-400">Generate content ideas quickly by using prompts.
+                            Toolverse helps you brainstorm and craft compelling content that engages your audience.</p>
+                    </div>
+                    <div class="rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800">
+                        <div
+                            class="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
+                            <svg class="w-5 h-5 text-primary-600 lg:w-6 lg:h-6 dark:text-primary-300"
+                                fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="mb-2 text-xl font-bold dark:text-white">User-Friendly Brand Setup</h3>
+                        <p class="text-gray-500 dark:text-gray-400">Create or switch between brands effortlessly. Set up
+                            your brand's name, handle, website, logo, and design elements with a user-friendly
+                            interface.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- QUOTE SECTION -->
+        <section class="bg-white dark:bg-gray-900">
+            <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
+
+                <hr class="w-8 h-8 mx-auto my-8 bg-gray-200 border-0 rounded md:my-12 dark:bg-gray-700">
+                <blockquote class="text-xl italic font-semibold text-center text-gray-900 dark:text-white">
+                    <p>"Embrace the future of content creation, where bytes and imagination merge seamlessly to shape
+                        compelling narratives. With Toolverse, your brand becomes a digital legend, and every word you
+                        write is a brushstroke on the canvas of possibility."</p>
+                    <cite class="text-center text-xl italic font-bold text-neutral-500 "> - Shyanukant Rathi </cite>
+                </blockquote>
+            </div>
+        </section>
+
+        <!-- --------------------- -->
+        <section class="bg-white dark:bg-gray-900">
+            <div
+                class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
+                <img class="w-full dark:hidden"
+                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
+                    alt="dashboard image">
+                <img class="w-full hidden dark:block"
+                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup-dark.svg"
+                    alt="dashboard image">
+                <div class="mt-4 md:mt-0">
+                    <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Let's craft
+                        captivating content and stories that connect and inspire</h2>
+                    <p class="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">In the vast digital universe,
+                        where content is king, Toolverse emerges as your guiding star. Picture a realm where AI meets
+                        creativity, and brands take flight to new heights. With Toolverse, you're not just creating
+                        content; you're crafting captivating narratives that resonate. It's your secret weapon for
+                        turning ideas into reality, your passport to a world where imagination knows no bounds. Welcome
+                        to Toolverse, where innovation and inspiration converge to redefine the art of storytelling.</p>
+                    <a href="#"
+                        class="inline-flex items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900">
+                        Get started
+                        <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        
+    </div>
+</main>
+{% include "footer.html" %}
+{% endblock %}

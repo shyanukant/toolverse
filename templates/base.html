@@ -1,0 +1,35 @@
+{% load compress %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'head/css.html' %}
+    <title>Toolverse - {% block title %}{% endblock %}</title>
+    <script src="{% static 'js/theme-toggle.js' %}"></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    
+
+</head>
+
+<body class="dark:bg-gray-900">
+    {% if user.is_authenticated %}
+    {% include "nav&sidebar/navbar2.html" %}
+    {% else %}
+    {% include "nav&sidebar/navbar.html" %}
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+
+    {% block js %}
+    {% endblock %}
+
+    <script src="{% static 'js/button-toggle.js' %}"></script>
+    <script src="{% static 'colorfield/jscolor/jscolor.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+</body>
+
+</html>

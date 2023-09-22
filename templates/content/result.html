@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %} Contents View {% endblock %}
+{% block content %}
+{% include "nav&sidebar/sidebar.html" %}
+<div class="p-4 sm:ml-64">
+    <h1 class="mb-4 p-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ script.heading }}</h1>
+    <p class="mb-4 p-4 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ script.body }}</p>
+    <div class="md:container md:mx-auto flex flex-wrap justify-between mt-3">
+        <!-- <p class="text-white">{{social}}</p> -->
+        {% for key, value in social.items %}
+        <div
+            class="max-w-sm p-6 my-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+
+            <h3 class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ value.heading }}</h3>
+            <p class="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">{{ value.body }}</p>
+
+            <img src="{{ MEDIA_URL }}{{ value.img }}" alt="social image">
+            <a href="#"
+                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                Share
+                <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 14 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M1 5h12m0 0L9 1m4 4L9 9" />
+                </svg>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

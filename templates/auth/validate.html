@@ -1,0 +1,5 @@
+{% autoescape off %}
+
+    Click to validate http://{{ domain }}{% url 'authz:validate' uidb64=uid token=token %}
+
+{% endautoescape %}

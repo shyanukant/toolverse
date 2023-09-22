@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+{% include "nav&sidebar/sidebar.html" %}
+
+<div class="p-4 sm:ml-64">
+   <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
+      <div class="grid grid-cols-3 gap-4 mb-4">
+
+         <a href="{% url 'brands:create' %}"
+            class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-xl px-5 py-2.5 text-center mr-2 mb-2">Setup
+            Brand</a>
+         <a href="{% url 'contents:content_list' %}"
+            class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-xl px-5 py-2.5 text-center mr-2 mb-2">Contents</a>
+         <a href="{% url 'contents:create' %}"
+            class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-xl px-5 py-2.5 text-center mr-2 mb-2">Generate
+            Content</a>
+      </div>
+      <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+         <h1 class="text-blue-400 text-2xl">Coming Soon</h1>
+      </div>
+      
+
+   </div>
+</div>
+
+
+
+{% endblock %}
