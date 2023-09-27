@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'toolverse'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DA396D71BFA348AA9543468EA4D3DF0C }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E9AE0F1C6694401CA3C234242A8C17D3 }}
