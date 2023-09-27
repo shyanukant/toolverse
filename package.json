@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "tailwindcss -i toolverse/static/tailwind/input.css -o toolverse/static/css/toolverse-ui.css --watch"
+    "dev": "tailwindcss -i static/tailwind/input.css -o static/css/toolverse-ui.css --watch"
   },
   "devDependencies": {
     "tailwindcss": "^3.3.3"
