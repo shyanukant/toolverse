@@ -174,6 +174,24 @@ DATABASES = {
     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 }
 }
+
+# logs
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
+
 # EMAIL
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_HOST_USER = config.EMAIL_HOST_USER
