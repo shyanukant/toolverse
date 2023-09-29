@@ -57,12 +57,6 @@ jobs:
           name: python-app
           path: .
           
-      - name: Disable static collection and set migration command on App Service
-        uses: Azure/appservice-settings@v1
-        with:  
-          app-name: 'toolverse'
-          app-settings-json: '[{ "name": "DISABLE_COLLECTSTATIC", "value": "true" }, { "name": "POST_BUILD_COMMAND",  "value": "python manage.py makemigrations && python manage.py migrate" }, { "name": "SCM_DO_BUILD_DURING_DEPLOYMENT", "value": "true" }, { "name": "DJANGO_ENV", "value": "production"}]'
-
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
