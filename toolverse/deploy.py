@@ -1,6 +1,6 @@
 import os
 from .settings import *
-from .settings import  MIDDLEWARE, DEBUG
+from .settings import  MIDDLEWARE
 
 
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
@@ -22,7 +22,6 @@ DATABASES = {
 # Email send the user (email server)
 # EMAIL_HOST = 'smtpout.secureserver.net'
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-ALLOWED_HOSTS = ["*"]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MIDDLEWARE += 'whitenoise.middleware.WhiteNoiseMiddleware',
