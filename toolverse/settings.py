@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     #libraries
     'colorfield',
     'compressor',
-    'corsheaders',
+    # 'corsheaders',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -57,8 +57,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'allauth.account.middleware.AccountMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
+    # "corsheaders.middleware.CorsMiddleware",
+    # "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = 'toolverse.urls'
