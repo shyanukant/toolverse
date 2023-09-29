@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Set up Python version
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v3
         with:
           python-version: '3.11'
 
@@ -57,10 +57,16 @@ jobs:
           name: python-app
           path: .
           
+      - name: Disable static collection and set migration command on App Service
+        uses: Azure/appservice-settings@v1
+        with:  
+          app-name: ${{ env.WEBAPP_NAME }}
+          app-settings-json: '[{ "name": "DISABLE_COLLECTSTATIC", "value": "true" }, { "name": "POST_BUILD_COMMAND",  "value": "python manage.py makemigrations && python manage.py migrate" }, { "name": "SCM_DO_BUILD_DURING_DEPLOYMENT", "value": "true" }, { "name": "DJANGO_ENV", "value": "production"}]'
+          
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
           app-name: 'toolverse'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E9AE0F1C6694401CA3C234242A8C17D3 }}
+          publish-profile: ${{ "secrets.AZUREAPPSERVICE_PUBLISHPROFILE" }}
