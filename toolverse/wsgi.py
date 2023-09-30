@@ -8,11 +8,8 @@ https://docs.djangoproject.com/en/4.2/howto/deployment/wsgi/
 """
 
 import os
-
 from django.core.wsgi import get_wsgi_application
 
-setting_module = 'toolverse.deploy' if 'WEBSITE_HOSTNAME' in os.environ else 'toolverse.settings'
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', setting_module)
+os.environ.setdefault('DJANGO_SETTINGS_MODULE','toolverse.settings')
 
 application = get_wsgi_application()
