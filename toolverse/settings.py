@@ -5,7 +5,8 @@ from django.contrib import messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'django-insecure-4$#rbx_4m(27p00=hoptv773tc+uatrn#%-24t4xw+q-5l@+@m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 MESSAGE_TAGS={
@@ -139,8 +140,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT =  BASE_DIR / 'staticfiles'
-STATICFILES_DIRS =  [ BASE_DIR/'static',]
+
 COMPRESS_ENABLED = True
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -156,6 +156,8 @@ MEDIA_ROOT = BASE_DIR/'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 if DEBUG == True:
+    STATIC_ROOT =  BASE_DIR / 'staticfiles'
+    STATICFILES_DIRS =  [ BASE_DIR/'static',]
     ALLOWED_HOSTS = ["*"]
     DATABASES = {
     'default': {
@@ -170,5 +172,6 @@ if DEBUG == True:
 # EMAIL_PORT = config.EMAIL_PORT
 # EMAIL_USE_TLS = True
 else:
+    STATIC_ROOT =  BASE_DIR / 'static'
     ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else ['*']
     CSRF_TRUSTED_ORIGINS = ['https://'+ os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
