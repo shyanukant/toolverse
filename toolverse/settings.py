@@ -174,7 +174,7 @@ else:
     CSRF_TRUSTED_ORIGINS = ['https://'+ os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 
 
-    connection_string = os.environ.get['AZURE_POSTGRESQL_CONNECTIONSTRING']
+    connection_string = os.environ['AZURE_POSTGRESQL_CONNECTIONSTRING']
     parameter = {pair.split('=')[0] : pair.split('=')[1] for pair in connection_string.split(' ')}
     DATABASES = {
         'default': {
