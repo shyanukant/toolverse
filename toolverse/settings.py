@@ -5,11 +5,9 @@ from django.contrib import messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 MESSAGE_TAGS={
     messages.ERROR: 'danger',
     messages.WARNING: 'warning',
@@ -142,10 +140,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT =  BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-    # toolverse/static
-    BASE_DIR/'static'
-]
+STATICFILES_DIRS =  [ BASE_DIR/'static',]
 COMPRESS_ENABLED = True
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -158,15 +153,9 @@ STATICFILES_FINDERS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR/'media'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-if DEBUG:
+if DEBUG == True:
     ALLOWED_HOSTS = ["*"]
     DATABASES = {
     'default': {
@@ -174,24 +163,6 @@ if DEBUG:
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
     }
-
-# logs
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-    },
-}
-
 # EMAIL
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_HOST_USER = config.EMAIL_HOST_USER
