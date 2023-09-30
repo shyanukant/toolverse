@@ -3,7 +3,7 @@ from .settings import *
 import settings 
 
 
-ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else ['*']
+settings.ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 CSRF_TRUSTED_ORIGINS = ['https://'+ os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 
 STATIC_HOST = 'https://'+ os.environ['WEBSITE_HOSTNAME']+'.azurewebsites.net/'
@@ -24,10 +24,6 @@ DATABASES = {
 # Email send the user (email server)
 # EMAIL_HOST = 'smtpout.secureserver.net'
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MIDDLEWARE += ['whitenoise.middleware.WhiteNoiseMiddleware']
