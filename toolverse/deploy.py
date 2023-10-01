@@ -6,7 +6,7 @@ import settings
 settings.ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 CSRF_TRUSTED_ORIGINS = ['https://'+ os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 
-STATIC_HOST = 'https://'+ os.environ['WEBSITE_HOSTNAME']+'.azurewebsites.net/'
+STATIC_HOST = 'https://'+ os.environ['WEBSITE_HOSTNAME']
 STATIC_URL = STATIC_HOST + "/static/"
 connection_string = os.environ['POSTGRESQLCONNSTR_AZURE_POSTGRESQL_CONNECTION_STRING']
 parameter = { pair.split('=')[0]:pair.split('=')[1] for pair in connection_string.split(' ')}
