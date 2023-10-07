@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECRET_KEY = 'django-insecure-4$#rbx_4m(27p00=hoptv773tc+uatrn#%-24t4xw+q-5l@+@m'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 MESSAGE_TAGS={
     messages.ERROR: 'danger',
     messages.WARNING: 'warning',
