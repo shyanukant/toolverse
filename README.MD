@@ -10,7 +10,7 @@ Welcome to Toolverse - your ultimate social media content creator app powered by
 Hey there, welcome to Toolverse!
 
 Toolverse is not just a platform; it's a dream realized by a passionate solo developer (that's me!) who believes in the power of creativity and technology. If you're wondering what's behind Toolverse, let me share our story.
-
+[![Toolverse - AI-Powered Social Media Content Creation Demo](https://img.youtube.com/vi/w-tU0j-mDmE/0.jpg)](https://www.youtube.com/watch?v=w-tU0j-mDmE)
 ### Our Story
 
 Toolverse was born from a simple idea: to make content creation more accessible, fun, and impactful. As someone who's been in the digital trenches, I know the challenges of juggling multiple brands, finding the right words, and connecting with your audience. That's why we set out to create a platform that marries the brilliance of AI with the art of storytelling.
