@@ -6,16 +6,16 @@ CSRF_TRUSTED_ORIGINS = ['https://'+ os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_
 
 STATIC_HOST = 'https://'+ os.environ['WEBSITE_HOSTNAME']
 STATIC_URL = STATIC_HOST + "/static/"
-connection_string = os.environ['AZURE_POSTGRESQL_CONNECTION_STRING']
-parameter = { pair.split('=')[0]:pair.split('=')[1] for pair in connection_string.split(' ')}
+# connection_string = os.environ['AZURE_POSTGRESQL_CONNECTION_STRING']
+# parameter = { pair.split('=')[0]:pair.split('=')[1] for pair in connection_string.split(' ')}
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': parameter['dbname'],
-        'HOST': parameter['host'],
-        'USER': parameter['user'],
-        'PASSWORD': parameter['password'],
-        'PORT' : parameter['port'], 
+        'NAME': os.environ['dbname'],
+        'HOST': os.environ['host'],
+        'USER': os.environ['user'],
+        'PASSWORD': os.environ['password'],
+        'PORT' : os.environ['port'], 
     }
 }
 # Email send the user (email server)
