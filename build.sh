@@ -17,4 +17,4 @@ then
 fi
 
 # Run your Django app using Gunicorn
-GUNICORN_CMD_ARGS="--timeout 600 --access-logfile '-' --error-logfile '-' gunicorn  toolverse.wsgi:application --bind 0.0.0.0:$PORT
+# GUNICORN_CMD_ARGS="--timeout 600 --access-logfile '-' --error-logfile '-' gunicorn  toolverse.wsgi:application --bind 0.0.0.0:$PORT
