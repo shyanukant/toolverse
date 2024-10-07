@@ -175,6 +175,17 @@ else:
     ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else ['*']
     CSRF_TRUSTED_ORIGINS = ['https://'+ os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ['dbname'],
+        'HOST': os.environ['host'],
+        'USER': os.environ['user'],
+        'PASSWORD': os.environ['password'],
+        'PORT' : os.environ['port'], 
+    }
+    }
+
     # HTTPS SETTINGS
     SESSION_COOKIE_SECURE=True
     CSRF_COOKIE_SECURE=True
