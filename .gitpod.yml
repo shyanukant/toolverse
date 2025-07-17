@@ -1,0 +1,5 @@
+tasks:
+  - init: |
+      pyenv install 3.10.12 # Or another specific 3.10 version
+      pyenv local 3.10.12
+    command: pip install -r requirements.txt
