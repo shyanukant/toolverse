@@ -2,9 +2,12 @@
 import os
 from pathlib import Path
 from django.contrib import messages
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv()
+
 SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECRET_KEY = 'django-insecure-4$#rbx_4m(27p00=hoptv773tc+uatrn#%-24t4xw+q-5l@+@m'
 DEBUG = os.environ.get('DEBUG')
@@ -154,15 +157,21 @@ MEDIA_ROOT = BASE_DIR/'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-if DEBUG == True:
+if DEBUG:
     STATIC_ROOT =  BASE_DIR / 'staticfiles'
     STATICFILES_DIRS =  [ BASE_DIR/'static',]
     ALLOWED_HOSTS = ["*"]
+    CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "https://8000-shyanukant-toolverse-ph2zlgru38c.ws-us120.gitpod.io"
+]
+
     DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
 # EMAIL
 # EMAIL_HOST = 'smtp.gmail.com'
@@ -184,3 +193,7 @@ else:
     # SECURE_HSTS_SECONDS=31536000
     # SECURE_HSTS_PRELOAD=True
     # SECURE_HSTS_INCLUDE_SUBDOMAINS=True
+
+
+# API KEYS
+GOOGLE_GEMINI_API_KEY=os.environ.get("GOOGLE_GEMINI_API_KEY")
