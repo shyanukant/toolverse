@@ -1,13 +1,11 @@
 from langchain_google_vertexai import VertexAIImageGeneratorChat, ChatVertexAI
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from django.conf import settings
 from typing import List, Dict
 from .storage import image_storage_url
 import base64
 import os 
-
-
 
 
 class SocialMediaGenerator:
@@ -40,25 +38,25 @@ class SocialMediaGenerator:
                 "limit": "280 characters",
                 "style": "concise, witty, engaging; relevant hashtags",
                 "features": "Use 1-3 hashtags; consider trending topics",
-                "img_aspect": "16:9"
+                
             },
             "linkedin": {
                 "limit": "1300 characters",
                 "style": "professional, informative",
                 "features": "Industry insight, pro hashtags",
-                "img_aspect": "1.91:1"
+                
             },
             "instagram": {
                 "limit": "500 characters",
                 "style": "visually descriptive, lifestyle",
                 "features": "5-10 hashtags, suggest visuals",
-                "img_aspect": "1:1"
+                
             },
             "facebook": {
                 "limit": "500 characters",
                 "style": "conversational, community-focused",
                 "features": "Ask questions/calls-to-action",
-                "img_aspect": "1.91:1"
+                
             }
         }
 
@@ -80,7 +78,7 @@ class SocialMediaGenerator:
             Only generate the post content.""")
         ])
 
-        return prompt, spec["img_aspect"]
+        return prompt
 
     def generate_post(self, 
             topic: str, 
@@ -88,7 +86,7 @@ class SocialMediaGenerator:
             context: str = "", 
             tone: str = "professional", 
             audience: str = "general" ) -> str:
-        prompt, _ = self.create_platform_specific_prompt(platform)
+        prompt = self.create_platform_specific_prompt(platform)
         chain = prompt | self.llm | self.output_parser
 
         result = chain.invoke(
@@ -102,69 +100,62 @@ class SocialMediaGenerator:
         )
         return result
     # generate image prompt
-    def generate_image_prompt(self,
-                        user_desc: str, 
-                        platform: str, 
-                        brand_handle, brand_colors,
-                        context: str = "") -> str:
+    def generate_image_prompt(self) -> str:
 
-        _, aspect = self.create_platform_specific_prompt(platform)
-        platform_styles = {
-            "twitter": "vibrant, eye-catching, modern, minimal text",
-            "linkedin": "professional, clean, innovative, no text",
-            "instagram": "aesthetic, bold, visually stunning, no text",
-            "facebook": "shareable, inclusive, visually engaging, minimal text"
-        }
-        style = platform_styles.get(platform.lower(), platform_styles['twitter'])
+        # _, aspect = self.create_platform_specific_prompt(platform)
+      
         # Construct the main (positive) prompt
-        main_prompt = f"""
-            Generate a visually compelling image for a {platform} post:
+        main_prompt = """
+            Transform this short description into a detailed prompt for image generation:
             Instructions:
+             - Style: modern, versatile, visually compelling, suitable for all social media platforms
              - Main concept: {user_desc}
-             - Style: {style}. Aspect ratio: {aspect}.
+             - Tone: {tone}.
              - Context: {context}.
             Design Guidelines:
             
             - Place the handle (@{brand_handle}) subtly in one corner as a small watermark or badge.
-            - Do not include any other text, hashtags, post content, or context information on the image.
-            - Do not write color codes, numbers, or color names anywhere on the image
+            - Prompt should be start with overall goal, Visual Style, Design Guidelines , don't give extra and introduction , only response a prompt for image.
+            - Make sure NOT to mention color codes or hashtags.
             - Focus on aesthetics, platform suitability, and clean visual storytelling.
             """
-
-        return main_prompt
+        prompt_template = PromptTemplate.from_template(main_prompt) 
+        return prompt_template
 
 
 
     # generate image 
     def generate_image(self, 
                 topic: str, 
+                tone: str,
                 brand_handle, 
                 brand_colors,
                 platform: str = "twitter", 
                 context: str = "", ) -> dict:
         try:
-            prompt = self.generate_image_prompt(topic, platform,  brand_handle, brand_colors, context,)
+            # Chain 1
+            prompt_template = self.generate_image_prompt()
+            prompt_text = prompt_template.format(
+                user_desc=topic,
+                tone=tone,
+                brand_handle=brand_handle,
+                context=context
+            )
+
+            detailed_prompt = self.llm.invoke(prompt_text)
+            if hasattr(detailed_prompt, "content"):
+                prompt_text = detailed_prompt.content
+            else:
+                prompt_text = str(detailed_prompt)
+            print(prompt_text)
+            # chain 2
+            image_result = self.img_llm.invoke(prompt_text)
             # print(prompt)
-            # messsage = [HumanMessage(content=[prompt])]
-            image_result = self.img_llm.invoke(prompt)
             return image_result
         except Exception as e:
             print(f"Image generation failed: {e}")
             return None
 
-
-    # generate post with image
-    def generate_post_with_image(self, topic: str, platform: str = "twitter",
-                                 context: str = "", tone: str = "professional",
-                                 brand_handle:str= None, brand_colors:list = None,
-                                 audience: str = "general") -> Dict[str, str]:
-        
-        # Generate text post and image
-        post = self.generate_post(topic, platform, context, tone, audience)
-        image_data = self.generate_image(topic,  brand_handle, brand_colors, platform, context,)
-        image_url = image_data.content[0]["image_url"]["url"].split(",")[-1] if image_data else None
-        url = image_storage_url(base64.b64decode(image_url))
-        return {"platform": platform, "post": post, "image_url": url}
     
     # generate multiple image with post
     def generate_multiple_posts_with_images(self,
@@ -177,18 +168,20 @@ class SocialMediaGenerator:
                                     audience: str = "general") -> Dict[str, Dict]:
         results = []
         for platform in platforms:
-            result = self.generate_post_with_image(
-                topic=topic,
-                platform=platform,
-                context=context,
-                tone=tone,
-                audience=audience,
-                brand_handle=brand_handle, 
-                brand_colors=brand_colors,
-            )
+            post = self.generate_post(
+                topic=topic, 
+                platform=platform, 
+                context=context, 
+                tone=tone, 
+                audience=audience)
+            result = {"platform": platform, "post": post}
             results.append(result)
+           
+        image_data = self.generate_image(topic, tone, brand_handle, brand_colors, platform, context,)
+        image_url = image_data.content[0]["image_url"]["url"].split(",")[-1] if image_data else None
+        url = image_storage_url(base64.b64decode(image_url))
 
-        return {"topic": topic, "contents": results}
+        return {"topic": topic, "contents": results, "img_url": url}
     
     # generate psot variants 
     def generate_post_variants( 
@@ -213,5 +206,11 @@ class SocialMediaGenerator:
 
 #####################################################################################################33333333
 # result = SocialMediaGenerator()
-# data = result.generate_post_with_image(topic="agentic in ai")
+# # data = result.generate_image(topic="agentic in ai" , tone="educational", brand_colors=None, brand_handle="shyanu")
+# data = result.generate_multiple_posts_with_images(
+#                                     topic="agentic in ai",
+#                                     platforms = ["twitter"],
+#                                     tone= "educational",
+#                                     brand_handle="shyanu"
+#                                     )
 # print(data)

@@ -53,7 +53,7 @@ class ContentView(LoginRequiredMixin, View):
     
         print(content_data)
 
-        context = { 'contents': content_data['contents']}
+        context = { 'contents': content_data['contents'], "img_url": content_data['img_url']}
         return render(request, 'content/result.html', context)
 
 # Create content from user prompt
