@@ -1,9 +1,9 @@
 ﻿# Core Web & Task Stack
-Django==4.2.5
+django==5.2.4
 django-allauth==0.56.1
 django-appconf==1.0.5
 django-colorfield==0.10.1
-django-compressor==4.4
+django-compressor==4.5.1
 django-cors-headers==4.2.0
 django-logging-json==1.15
 gunicorn==23.0.0
@@ -17,7 +17,7 @@ langchain-community>=0.0.30
 langchain-google-genai>=0.0.8
 google-cloud-aiplatform>=1.55.0
 # google-generativeai>=0.2.2
-langchain-google-vertexai-2.0.27
+langchain-google-vertexai==2.0.27
 
 # Networking/Requests
 requests==2.31.0
@@ -25,15 +25,6 @@ urllib3==1.26.16
 idna==3.4
 certifi==2023.7.22
 charset-normalizer==3.2.0
-
-# Python Stdlib/Compat
-asgiref==3.7.2
-sqlparse==0.4.4
-mypy-extensions==1.0.0
-typing-inspect==0.9.0
-typing_extensions==4.8.0
-tzdata==2023.3
-six==1.16.0
 
 # Asynchronous/AsyncIO
 aiohttp==3.8.5

@@ -1,7 +1,5 @@
 import os
-from .llm_model.llm import llm
-from .fetch_image.content_image import content_image
-from .image_generate.generate import generate
+from .llm_model.llm import SocialMediaGenerator
 from .models import ResponseModel
 from brands.models import BrandModel
 from .forms import PromptForm
@@ -33,6 +31,7 @@ class ContentsListView(LoginRequiredMixin, View):
         if BrandModel.objects.filter(user=request.user):
             brand = BrandModel.objects.get(user=request.user, is_active=True)
             responses = ResponseModel.objects.filter(brand=brand).order_by('-id')
+            # print(responses)
             return render(request, self.template_name, {'responses' : responses})
         else:
             return redirect('brands:brand_list')
@@ -50,10 +49,11 @@ class ContentView(LoginRequiredMixin, View):
             except ResponseModel.DoesNotExist:
                 content = None
 
-        cotent_data = content.response
-        script = cotent_data['script']
-        social = cotent_data['social']
-        context = { 'script': script, 'social':social, 'MEDIA_URL': MEDIA_URL}
+        content_data = content.response
+    
+        print(content_data)
+
+        context = { 'contents': content_data['contents']}
         return render(request, 'content/result.html', context)
 
 # Create content from user prompt
@@ -77,48 +77,22 @@ class PromptCreateView(LoginRequiredMixin, View):
     def post(self, request):
         form = self.input_form(request.POST)
         active_brand = BrandModel.objects.get(user = request.user, is_active=True)
+
+        if active_brand:
+            brand_handle_or_website = active_brand.handle_or_website
         
         if form.is_valid():
             cleaned_data = form.cleaned_data
+            generate = SocialMediaGenerator()
             # print(cleaned_data)
-            result = llm(cleaned_data['prompt'], cleaned_data['dispositions'], cleaned_data['platforms'])
+            # result = llm(cleaned_data['prompt'], cleaned_data['dispositions'], cleaned_data['platforms'])
+            topic = cleaned_data['subject']
+            platforms = cleaned_data['platforms']
+            context  = cleaned_data['prompt']
+            tone = cleaned_data['tone']
             
-            social = result['social']
-            seo = result['seo']
-
-             # image generation 
-            background_color = (255, 255, 255)
-            logo_size = (100, 100)
-            logo_path = active_brand.logo
-            image_path = content_image(seo['keyword'][0])
-            website_link = active_brand.handle_or_website
-            heading_font_size = 72
-            body_font_size = 48
-            link_font_size = 36
-
-            # Define color
-
-            font_style = os.path.join(BASE_DIR, "static", "BAUHS93.TTF")
-            color_white = active_brand.color1
-            color_black = active_brand.color2
-            color_blue = active_brand.color3
-
-            print(font_style)
-
-            for s in social.keys():
-                if s == 'facebook':
-                    margin, width, height = 60, 1200, 630
-
-                elif s == 'instagram':
-                    margin, width, height = 80, 1080, 1080
-
-                elif s == 'linkedin':
-                    margin, width, height = 80, 1080, 1080
-
-                heading = social[s]["heading"]
-                body = social[s]["body"]
-                image = generate(heading, body, website_link, image_path, logo_path, font_style,heading_font_size, body_font_size, link_font_size, width, height, logo_size, margin , color_white, color_black, color_blue, background_color)
-                social[s]['img'] = image
+            result = generate.generate_multiple_posts_with_images(topic=topic, platforms=platforms, context=context, tone=tone, brand_handle=brand_handle_or_website)
+            # print("final:" , result)
             # save content
             response = ResponseModel(brand=active_brand, response=result)
             response.save()

@@ -164,7 +164,7 @@ if DEBUG:
     CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-    "https://8000-shyanukant-toolverse-ph2zlgru38c.ws-us120.gitpod.io"
+    "https://8000-shyanukant-toolverse-aw48vuii6b9.ws-us120.gitpod.io"
 ]
 
     DATABASES = {
@@ -197,3 +197,11 @@ else:
 
 # API KEYS
 GOOGLE_GEMINI_API_KEY=os.environ.get("GOOGLE_GEMINI_API_KEY")
+GOOGLE_CLOUD_PROJECT=os.environ.get("GOOGLE_CLOUD_PROJECT")
+GOOGLE_PROJECT_LOCATION=os.environ.get("GOOGLE_PROJECT_LOCATION")
+GCP_BUCKET_NAME=os.environ.get('GCP_BUCKET_NAME')
+GCP_BUCKET_DESTINATION=os.environ.get('GCP_BUCKET_DESTINATION')
+
+
+GOOGLE_APPLICATION_CREDENTIALS = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = GOOGLE_APPLICATION_CREDENTIALS

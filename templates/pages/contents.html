@@ -13,10 +13,10 @@
                 class=" flex p-4 my-4 border border-gray-300 rounded-lg bg-gray-50 dark:border-gray-600 dark:bg-gray-800 ">
                 <div class="flex flex-col items-center">
                     <!-- <span class="sr-only">Info</span> -->
-                    <h3 class="text-lg font-medium text-gray-800 dark:text-gray-300">{{ response }}</h3>
-                    <p class="m-4 text-sm text-gray-800 dark:text-gray-300">
+                    <h3 class="text-lg font-medium text-gray-800 dark:text-gray-300">{{ response }}...</h3>
+                    {% comment %} <p class="m-4 text-sm text-gray-800 dark:text-gray-300">
                         {{ response.response.script.body|slice:"0:70" }}...
-                    <p>
+                    <p> {% endcomment %}
                 </div>
                 <div>
                     <a href="{% url 'contents:result' response.id %}" data-response-id="{{ response.id }}"

@@ -1,198 +1,217 @@
+from langchain_google_vertexai import VertexAIImageGeneratorChat, ChatVertexAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.messages import HumanMessage, SystemMessage
-from typing import Dict, List, Optional
 from django.conf import settings
-import json
+from typing import List, Dict
+from .storage import image_storage_url
+import base64
+import os 
 
 
 
 
 class SocialMediaGenerator:
     def __init__(self):
-        
-        # initialize with google gemini model 
-        self.llm = ChatGoogleGenerativeAI(
-            model = "gemini-2.0-flash-exp",
-            temperature = 0.7,
-            max_output_token = 1500,
-            google_api_key = API_KEY if API_KEY else settings.GOOGLE_GEMINI_API_KEY
+        # project = GOOGLE_CLOUD_PROJECT
+        # location = GOOGLE_PROJECT_LOCATION
+        project = settings.GOOGLE_CLOUD_PROJECT
+        location = settings.GOOGLE_PROJECT_LOCATION
 
+        # Text LLM and Image generators (Vertex AI)
+        self.llm = ChatVertexAI(
+            model_name="gemini-2.0-flash-exp",
+            temperature=0.7,
+            max_output_tokens=1500,
+            project=project,
+            location=location
         )
-        self.output_parser = StrOutputParser()
 
+        self.img_llm = VertexAIImageGeneratorChat(
+            model_name="imagen-4.0-generate-preview-06-06",
+            project=project,
+            location=location
+        )
+
+        self.output_parser = StrOutputParser()
+    
     def create_platform_specific_prompt(self, platform:str):
-        """Create platform-specific prompt templates."""
         platform_specs = {
             "twitter": {
                 "limit": "280 characters",
-                "style": "concise, witty, and engaging with relevant hashtags",
-                "features": "Use 1-3 relevant hashtags and consider trending topics"
+                "style": "concise, witty, engaging; relevant hashtags",
+                "features": "Use 1-3 hashtags; consider trending topics",
+                "img_aspect": "16:9"
             },
             "linkedin": {
-                "limit": "1300 characters for optimal engagement",
-                "style": "professional, informative, and thought-provoking",
-                "features": "Include industry insights and professional hashtags"
+                "limit": "1300 characters",
+                "style": "professional, informative",
+                "features": "Industry insight, pro hashtags",
+                "img_aspect": "1.91:1"
             },
             "instagram": {
                 "limit": "500 characters",
-                "style": "visually descriptive, engaging, and lifestyle-focused",
-                "features": "Use 5-10 relevant hashtags and suggest visual elements"
+                "style": "visually descriptive, lifestyle",
+                "features": "5-10 hashtags, suggest visuals",
+                "img_aspect": "1:1"
             },
             "facebook": {
-                "limit": "500 characters for optimal engagement",
-                "style": "conversational, community-focused, and engaging",
-                "features": "Encourage interaction with questions or calls-to-action"
+                "limit": "500 characters",
+                "style": "conversational, community-focused",
+                "features": "Ask questions/calls-to-action",
+                "img_aspect": "1.91:1"
             }
         }
 
         spec = platform_specs.get(platform.lower(), platform_specs['twitter'])
-
-        # system message template 
-        system_message = f"""You are a social media content creator specializing in {platform.upper()} posts. 
-        
-        Platform Guidelines:
-        - Character limit: {spec['limit']}
-        - Style: {spec['style']}
-        - Special features: {spec['features']}
-        
-        Create engaging, original content that follows {platform} best practices.
-        Make sure the content is appropriate for the platform's audience and culture.
+        system_message = f"""You are a social media content creator for {platform.upper()}.
+            Guidelines:
+            - Limit: {spec['limit']}
+            - Style: {spec['style']}
+            - Features: {spec['features']}
+            Create engaging, original posts to maximize platform performance.
         """
 
-        # setup prompt template
-        prompt = ChatPromptTemplate.from_messages(
-            [
-                ("system", system_message),
-                ("human", """
-                    Create a {platform} post about: {topic}
-                
-                    Additional context: {context}
-                    Tone: {tone}
-                    Target audience: {audience}
-                    
-                    Generate only the post content, ready to publish.
-                """)
-                ]
-        )
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", system_message),
+            ("human", """Create a {platform} post about: {topic}
+            Context: {context}
+            Tone: {tone}
+            Target audience: {audience}
+            Only generate the post content.""")
+        ])
 
-        return prompt
+        return prompt, spec["img_aspect"]
 
-    # post generation funtions
-    def generate_post(self,
-                    topic: str, 
-                    platform: str = "twitter",
-                    context: str = "",
-                    tone: str = "professional",
-                    audience: str = "general" 
-                    ) -> str:
-                    
-        """
-            Generate a social media post for the specified platform.
-            
-            Args:
-                topic: The main topic/subject of the post
-                platform: Target platform (twitter, linkedin, instagram, facebook)
-                context: Additional context or details
-                tone: Tone of the post (professional, casual, humorous, etc.)
-                audience: Target audience description
-                
-            Returns:
-                Generated social media post content 
-        """
-
-        # Create prompt 
-        prompt = self.create_platform_specific_prompt(platform)
-
-        # Create chain ==== prompt → model → parser ==== 
-        # it's overloaded operator usage ==> connect prompt output as llm input and then output parser input ( combine ) 
-        chain = prompt | self.llm | self.output_parser  
-
-        # generate the post
+    def generate_post(self, 
+            topic: str, 
+            platform: str = "twitter", 
+            context: str = "", 
+            tone: str = "professional", 
+            audience: str = "general" ) -> str:
+        prompt, _ = self.create_platform_specific_prompt(platform)
+        chain = prompt | self.llm | self.output_parser
 
         result = chain.invoke(
             {
-                "topic": topic,
-                "platform": platform,
-                "context": context,
-                "tone": tone,
-                "audience": audience
+            "topic": topic,
+            "platform": platform,
+            "context": context,
+            "tone": tone,
+            "audience": audience
             }
         )
+        return result
+    # generate image prompt
+    def generate_image_prompt(self,
+                        user_desc: str, 
+                        platform: str, 
+                        brand_handle, brand_colors,
+                        context: str = "") -> str:
 
-        return result.strip()
-
-
-    # multiple post generation function
-    def generate_multiple_posts(
-                            self,
-                            topic: str,
-                            platforms: List[str] = ["twitter", "linkedin", "instagram"],
-                            context: str = "",
-                            tone: str = "professional",
-                            audience: str = "general") -> Dict[str, str]:
-
-        """
-            Generate posts for multiple platforms simultaneously.
+        _, aspect = self.create_platform_specific_prompt(platform)
+        platform_styles = {
+            "twitter": "vibrant, eye-catching, modern, minimal text",
+            "linkedin": "professional, clean, innovative, no text",
+            "instagram": "aesthetic, bold, visually stunning, no text",
+            "facebook": "shareable, inclusive, visually engaging, minimal text"
+        }
+        style = platform_styles.get(platform.lower(), platform_styles['twitter'])
+        # Construct the main (positive) prompt
+        main_prompt = f"""
+            Generate a visually compelling image for a {platform} post:
+            Instructions:
+             - Main concept: {user_desc}
+             - Style: {style}. Aspect ratio: {aspect}.
+             - Context: {context}.
+            Design Guidelines:
             
-            Returns:
-                Dictionary with platform names as keys and generated posts as values
-        """
-        posts = {}
+            - Place the handle (@{brand_handle}) subtly in one corner as a small watermark or badge.
+            - Do not include any other text, hashtags, post content, or context information on the image.
+            - Do not write color codes, numbers, or color names anywhere on the image
+            - Focus on aesthetics, platform suitability, and clean visual storytelling.
+            """
 
+        return main_prompt
+
+
+
+    # generate image 
+    def generate_image(self, 
+                topic: str, 
+                brand_handle, 
+                brand_colors,
+                platform: str = "twitter", 
+                context: str = "", ) -> dict:
+        try:
+            prompt = self.generate_image_prompt(topic, platform,  brand_handle, brand_colors, context,)
+            # print(prompt)
+            # messsage = [HumanMessage(content=[prompt])]
+            image_result = self.img_llm.invoke(prompt)
+            return image_result
+        except Exception as e:
+            print(f"Image generation failed: {e}")
+            return None
+
+
+    # generate post with image
+    def generate_post_with_image(self, topic: str, platform: str = "twitter",
+                                 context: str = "", tone: str = "professional",
+                                 brand_handle:str= None, brand_colors:list = None,
+                                 audience: str = "general") -> Dict[str, str]:
+        
+        # Generate text post and image
+        post = self.generate_post(topic, platform, context, tone, audience)
+        image_data = self.generate_image(topic,  brand_handle, brand_colors, platform, context,)
+        image_url = image_data.content[0]["image_url"]["url"].split(",")[-1] if image_data else None
+        url = image_storage_url(base64.b64decode(image_url))
+        return {"platform": platform, "post": post, "image_url": url}
+    
+    # generate multiple image with post
+    def generate_multiple_posts_with_images(self,
+                                    topic: str,
+                                    platforms: List[str] = ["twitter", "linkedin", "instagram"],
+                                    context: str = "",
+                                    tone: str = "professional",
+                                    brand_handle: str=None, 
+                                    brand_colors: list=None,
+                                    audience: str = "general") -> Dict[str, Dict]:
+        results = []
         for platform in platforms:
-            try:
-                post = self.generate_post(
-                    topic=topic,
-                    platform=platform,
-                    context=context,
-                    tone=tone,
-                    audience=audience
-                )
-                posts[platform] = post
+            result = self.generate_post_with_image(
+                topic=topic,
+                platform=platform,
+                context=context,
+                tone=tone,
+                audience=audience,
+                brand_handle=brand_handle, 
+                brand_colors=brand_colors,
+            )
+            results.append(result)
 
-            except Exception as e:
-                print(e)
-                posts[platform] = "Error generating post: {str(e)}"
-        return posts
+        return {"topic": topic, "contents": results}
+    
+    # generate psot variants 
+    def generate_post_variants( 
+                self, topic: str, platform: str = "twitter", count: int = 3,
+                              context: str = "", tone: str = "professional",
+                              audience: str = "general") -> List[Dict]:
 
-
-    def generate_post_variants(
-        self,
-        topic: str,
-        platform: str = "twitter",
-        count: int = 3,
-        context: str = "",
-        tone: str = "professional",
-        audience: str = "general") -> List[str]:
-
-        """
-            Generate multiple variants of a post for A/B testing.
-            
-            Returns:
-                List of post variants
-        """
         variants = []
         for i in range(count):
-            # Modify the prompt slightly for each variant
-            variant_context = f"{context} ( Variant {i+1}: Make this version {'More engaging' if i==0 else 'More informative' if i==1 else 'more creative' })"
-            try:
-                variant = self.generate_post(
-                    topic=topic,
-                    platform=platform,
-                    context=variant_context,
-                    tone=tone,
-                    audience=audience
-                )
-                variants.append(variant)
-            except Exception as e:
-                print(e)
-                variants.append(f"Error generating variant {i+1}: {str(e)}")
+            variant_context = f"""
+                {context} (Variant {i+1} Make this version 
+                {"more engaging" if i == 0 else  
+                "more informative" if i==1 else "more creative"} )
+            """
+            post = self.generate_post(topic, platform, variant_context, tone, audience)
+            image_data = self.generate_image(topic, platform, variant_context)
+            image_url = image_data.content[0]["image_url"]["url"].split(",")[-1] if image_data else None
+            url = image_storage_url(base64.b64decode(image_url))
+            variants.append({"post": post, "image_url": url})
         return variants
 
 
-content = SocialMediaGenerator()
-
-print(content.generate_post_variants("email marketing"))
-
+#####################################################################################################33333333
+# result = SocialMediaGenerator()
+# data = result.generate_post_with_image(topic="agentic in ai")
+# print(data)

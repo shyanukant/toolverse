@@ -1,10 +1,13 @@
 <!-- user input form  -->
 <form method="post">
     {% csrf_token %}
+    <label for="{{ form.prompt.id.for_label }}"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Topic/Subject *</label>
+    {{ form.subject }}
     <!-- prompt input  -->
     <label for="{{ form.prompt.id.for_label }}"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Enter You
-        Prompt</label>
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        Additional Context</label>
     {{ form.prompt }}
 
     <div class="flex justify-around">
@@ -32,9 +35,9 @@
 
         <!-- dispositions input  -->
         <div>
-            <label for="{{ form.dispositions.id.for_label }}"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dipositions</label>
-            {{ form.dispositions }}
+            <label for="{{ form.tone.id.for_label }}"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tone</label>
+            {{ form.tone }}
         </div>
     
     </div><br>

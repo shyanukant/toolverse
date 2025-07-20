@@ -8,11 +8,11 @@ PLATFORMS_CHOICES = [
     ("instagram", "Instagram"),
     ("twitter", "Twitter"),
     ("linkedin", "LinkedIn"),
-    ("youtube", "YouTube"),
-    ("pinterest", "Pinterest"),
+    # ("youtube", "YouTube"),
+    # ("pinterest", "Pinterest"),
 ]
 
-DISPOSITIONS_CHOICES = [
+TONES_CHOICES = [
         ( "Providing clear and factual information in a straightforward manner.", "Informative"),
             ( "Sharing insights tips and knowledge to educate theaudience.", "Educational"),
             ( "Writing in a relaxed and conversational style as if chatting with a friend.", "Casual"),
@@ -39,6 +39,16 @@ char_class = 'block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg bor
 choice_class = 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'
 
 class PromptForm(forms.Form):
+    subject = forms.CharField(
+        required=True,
+        label="Enter the topic/subject",
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "your topic...",
+                "class": char_class
+            }
+        )
+    )
     prompt = forms.CharField(
         label="Enter Your Prompt",
         widget=forms.Textarea(
@@ -46,7 +56,6 @@ class PromptForm(forms.Form):
                 'placeholder': 'Prompt...',
                 'class':char_class
                    }),  # Use 'placeholder' with lowercase 'p'
-        max_length=200,
         required=True
     )
     
@@ -57,9 +66,9 @@ class PromptForm(forms.Form):
         required=True
     )
 
-    dispositions = forms.ChoiceField(
-        label="Dispositions",
-        choices=DISPOSITIONS_CHOICES,
+    tone = forms.ChoiceField(
+        label="tone",
+        choices=TONES_CHOICES,
         widget=forms.Select(
             attrs={'class': choice_class}),
         required=True
